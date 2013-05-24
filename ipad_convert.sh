@@ -12,7 +12,13 @@ fi
 subtitle=""
 if [ -n "$3" ]
 then
-		subtitle="-utf8 -sub $3"
+	enc=`file $3 | grep -i utf-8`	
+	utf8=""
+	if [ -n "$enc" ]
+	then
+		utf8="-utf8"
+	fi
+	subtitle="$utf8 -sub $3"
 fi
 
 mencoder -ovc x264 -x264encopts global_header:bframes=0 -oac faac -faacopts br=160:mpeg=4:object=2:raw -of lavf $input -o $output $subtitle
